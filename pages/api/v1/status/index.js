@@ -1,8 +1,28 @@
 import database from "infra/database";
 
 async function status(request, response) {
-  const result = await database.query("SELECT 1+1");
-  response.status(200).json({ chave: "Resposta maneira irmão" });
+  const updatedAt = new Date().toISOString();
+
+  const dbMaxConnectionsResult = await database.query("SHOW max_connections;");
+  const dbVersionResult = await database.query("SHOW server_version;");
+  const dbActiveConnectionsResult = await database.query(
+    "SELECT count(*) FROM pg_stat_activity WHERE state = \'active\';",
+  );
+
+  const maxConnections = dbMaxConnectionsResult.rows[0].max_connections;
+  const postgresVersion = dbVersionResult.rows[0].server_version;
+  const activeConnections = dbActiveConnectionsResult.rows[0].count;
+
+  response.status(200).json({
+    updatedAt: updatedAt,
+    dependecies: {
+      database: {
+        maxConnections: parseInt(maxConnections),
+        activeConnections: parseInt(activeConnections),
+        postgresVersion: postgresVersion,
+      },
+    },
+  });
 }
 
 export default status;

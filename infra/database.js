@@ -11,6 +11,7 @@ async function query(queryObject) {
   await client.connect();
   const result = await client.query(queryObject);
   client.end();
+  return result;
 }
 
 export default {
