@@ -4,7 +4,8 @@ import database from "infra/database";
 
 export default async function migrate(request, response) {
   const requestMethod = request.method;
-  if (!["GET", "POST"].includes(requestMethod)) {
+  const allowedMethods = ["GET", "POST"];
+  if (!allowedMethods.includes(requestMethod)) {
     return response.status(405).end();
   }
   let dbClient;
