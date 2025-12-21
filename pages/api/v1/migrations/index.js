@@ -3,31 +3,39 @@ import { join } from "node:path";
 import database from "infra/database";
 
 export default async function migrate(request, response) {
-  const dbClient = await database.getNewClient();
-  const defaultMigrationRunnerConfig = {
-    dbClient: dbClient,
-    dryRun: true,
-    dir: join("infra", "migrations"),
-    direction: "up",
-    verbose: true,
-    migrationsTable: "pgmigrations",
-  };
-
-  if (request.method === "GET") {
-    const pendingMigrations = await migrationRunner(
-      defaultMigrationRunnerConfig,
-    );
-    await dbClient.end();
-    return response.status(200).json(pendingMigrations);
+  const requestMethod = request.method;
+  if (!["GET", "POST"].includes(requestMethod)) {
+    return response.status(405).end();
   }
-  if (request.method === "POST") {
-    const executedMigrations = await migrationRunner({
-      ...defaultMigrationRunnerConfig,
-      dryRun: false,
-    });
-    await dbClient.end();
-    return response.status(201).json(executedMigrations);
-  }
+  let dbClient;
+  try {
+    dbClient = await database.getNewClient();
+    const defaultMigrationRunnerConfig = {
+      dbClient: dbClient,
+      dryRun: true,
+      dir: join("infra", "migrations"),
+      direction: "up",
+      verbose: true,
+      migrationsTable: "pgmigrations",
+    };
 
-  return response.status(405).end();
+    if (requestMethod === "GET") {
+      const pendingMigrations = await migrationRunner(
+        defaultMigrationRunnerConfig,
+      );
+      return response.status(200).json(pendingMigrations);
+    }
+    if (requestMethod === "POST") {
+      const executedMigrations = await migrationRunner({
+        ...defaultMigrationRunnerConfig,
+        dryRun: false,
+      });
+      return response.status(201).json(executedMigrations);
+    }
+  } catch (error) {
+    console.error(error);
+    throw error;
+  } finally {
+    await dbClient.end();
+  }
 }
