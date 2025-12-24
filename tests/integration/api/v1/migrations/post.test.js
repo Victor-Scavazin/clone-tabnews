@@ -10,12 +10,9 @@ test("POST to /api/v1/migrations should return 200", async () => {
   const response1 = await fetch("http://localhost:3000/api/v1/migrations", {
     method: "POST",
   });
-  const responseDelete = await fetch(
-    "http://localhost:3000/api/v1/migrations",
-    {
-      method: "DELETE",
-    },
-  );
+  await fetch("http://localhost:3000/api/v1/migrations", {
+    method: "DELETE",
+  });
   expect(response1.status).toBe(201);
   const resultQuery1 = await database.query("SELECT * FROM pgmigrations;");
   const respBody1 = await response1.json();
