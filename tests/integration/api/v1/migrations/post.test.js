@@ -1,10 +1,10 @@
+import orchestratror from "tests/orchestrator.js";
 import database from "infra/database.js";
 
-beforeAll(cleanDatabase);
-
-async function cleanDatabase() {
+beforeAll(async () => {
+  await orchestratror.waitForAllServices();
   await database.query("DROP SCHEMA public CASCADE; CREATE SCHEMA public;");
-}
+});
 
 test("POST to /api/v1/migrations should return 200", async () => {
   const response1 = await fetch("http://localhost:3000/api/v1/migrations", {
@@ -16,7 +16,6 @@ test("POST to /api/v1/migrations should return 200", async () => {
       method: "DELETE",
     },
   );
-  console.log(responseDelete);
   expect(response1.status).toBe(201);
   const resultQuery1 = await database.query("SELECT * FROM pgmigrations;");
   const respBody1 = await response1.json();
