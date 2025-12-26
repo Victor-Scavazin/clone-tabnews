@@ -1,0 +1,11 @@
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 80px 24px;
+}
+
+.topBar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 40px;
+}

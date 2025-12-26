@@ -1,0 +1,13 @@
+.main {
+  padding: 40px;
+}
+
+.header {
+  margin-bottom: 30px;
+}
+
+.card {
+  background: #f2f2f2;
+  padding: 20px;
+  border-radius: 10px;
+}

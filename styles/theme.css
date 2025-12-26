@@ -1,0 +1,35 @@
+:root {
+  --bg: #ffffff;
+  --text: #111111;
+  --muted: #444;
+  --link: #0066cc;
+}
+
+[data-theme="dark"] {
+  --bg: #0f0f0f;
+  --text: #eaeaea;
+  --muted: #aaaaaa;
+  --link: #4ea1ff;
+}
+
+body {
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(rgba(0, 0, 0, 0.03) 1px, transparent 1px), var(--bg);
+  background-size: 32px 32px;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.015),
+    rgba(0, 0, 0, 0.015) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  opacity: 0.4;
+}

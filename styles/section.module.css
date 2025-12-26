@@ -1,0 +1,26 @@
+.section {
+  margin-top: 48px;
+}
+
+.section h2 {
+  font-size: 1.4rem;
+  margin-bottom: 16px;
+}
+
+.section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.section li {
+  margin-bottom: 8px;
+}
+
+.section a {
+  text-decoration: none;
+  color: #0066cc;
+}
+
+.section a:hover {
+  text-decoration: underline;
+}
