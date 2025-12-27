@@ -1,9 +1,8 @@
 import orchestratror from "tests/orchestrator.js";
-import database from "infra/database.js";
 
 beforeAll(async () => {
   await orchestratror.waitForAllServices();
-  await database.query("DROP SCHEMA public CASCADE; CREATE SCHEMA public;");
+  await orchestratror.clearDatabase();
 });
 
 describe("GET /api/v1/status", () => {
