@@ -1,13 +1,3 @@
-<<<<<<< HEAD
-FROM amazoncorretto:21-alpine
-
-WORKDIR /app
-
-
-EXPOSE 3000
-
-ENTRYPOINT [ "npm ", "run", "dev"]
-=======
 # 1. Instalação das dependências
 FROM node:20-alpine AS deps
 WORKDIR /app
@@ -44,4 +34,3 @@ USER nextjs
 
 EXPOSE 3000
 CMD ["node", "server.js"]
->>>>>>> 0e8feb4 (feat: add `Dockerfile`)
