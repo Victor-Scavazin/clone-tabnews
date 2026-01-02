@@ -23,6 +23,7 @@ async function getNewClient() {
     password: process.env.POSTGRES_PASSWORD,
     ssl: process.env.NODE_ENV === "production" ? true : false,
   });
+
   await client.connect();
   return client;
 }
