@@ -23,7 +23,9 @@ async function getNewClient() {
     password: process.env.POSTGRES_PASSWORD,
     ssl:
       process.env.INFRA === "aws"
-        ? false
+        ? {
+            rejectUnauthorized: false,
+          }
         : process.env.NODE_ENV === "production"
           ? true
           : false,
@@ -34,12 +36,10 @@ async function getNewClient() {
     user: process.env.POSTGRES_USER,
     database: process.env.POSTGRES_DB,
     password: process.env.POSTGRES_PASSWORD,
-    ssl:
-      process.env.INFRA === "aws"
-        ? false
-        : process.env.NODE_ENV === "production"
-          ? true
-          : false,
+    infra: process.env.INFRA,
+    ssl: {
+      rejectUnauthorized: false,
+    },
   });
   await client.connect();
   return client;
