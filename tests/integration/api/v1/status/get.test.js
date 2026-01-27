@@ -4,9 +4,9 @@ beforeAll(async () => {
   await orchestratror.waitForAllServices();
 });
 
-describe("GET /api/v1/migrations", () => {
+describe("GET /api/v1/status", () => {
   describe("Anonymous user", () => {
-    describe("Retrieving pending migrations", () => {
+    describe("Retrieving current system status", () => {
       test("GET to /api/v1/status should return 200", async () => {
         const response = await fetch("http://localhost:3000/api/v1/status");
         expect(response.status).toBe(200);
