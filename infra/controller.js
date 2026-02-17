@@ -1,4 +1,9 @@
-import { InternalServerError, MethodNotAllowedError } from "infra/errors";
+import {
+  InternalServerError,
+  MethodNotAllowedError,
+  ValidationError,
+  NotFoundError,
+} from "infra/errors";
 
 const controller = {
   errorHandlers: {
@@ -13,12 +18,15 @@ function onNoMatchHanlder(request, response) {
 }
 
 function onErrorHanlder(error, request, response) {
+  if (error instanceof ValidationError || error instanceof NotFoundError) {
+    return response.status(error.statusCode).json(error);
+  }
+
   const publicErrorObject = new InternalServerError({
     statusCode: error.statusCode,
     cause: error,
   });
-  console.log("\nError inside next-connect catch");
-  response.status(500).json(publicErrorObject);
+  console.log(publicErrorObject);
 
   response.status(publicErrorObject.statusCode).json(publicErrorObject);
 }
